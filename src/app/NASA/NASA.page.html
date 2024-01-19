@@ -1,0 +1,54 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title  slot="start">
+      NASA
+      <ion-icon size="large" style="vertical-align: -7pt" name="planet-outline"></ion-icon>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Tab 1</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+    <ion-card>
+      <ion-card-header>
+          <ion-card-subtitle>APOD</ion-card-subtitle>
+        <ion-item>
+          <ion-card-title>Astronomy Picture of the Day</ion-card-title>
+        </ion-item>
+        </ion-card-header>
+      <ion-chip>{{ APODdata?.date }}</ion-chip>
+
+      <ion-card-content>
+        <img [src]="APODdata?.hdurl" *ngIf="APODdata?.hdurl" alt="APOD Image">
+      </ion-card-content>
+      <ion-card-content>
+        {{ APODdata?.explanation }}
+      </ion-card-content>
+    </ion-card>
+
+  <ng-container *ngFor="let item of EPIC">
+    <ion-card *ngIf="item.image">
+      <ion-card-header>
+        <ion-card-subtitle>EPIC</ion-card-subtitle>
+        <ion-item>
+          <ion-card-title>Earth Polychromatic Imaging Camera</ion-card-title>
+        </ion-item>
+      </ion-card-header>
+      <ion-chip>{{ item.date }}</ion-chip>
+
+      <ion-card-content>
+        <img [src]="getEpicImageUrl(item.image, item.date)" (error)="onImageError($event)">
+      </ion-card-content>
+      <ion-card-content>
+        {{ item.caption }}
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+
+
+</ion-content>

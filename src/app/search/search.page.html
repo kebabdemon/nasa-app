@@ -1,0 +1,55 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-input style="padding-left: 8pt !important;" labelPlacement="stacked"
+               [clearOnEdit]="true"
+               placeholder="Search..." [(ngModel)]="searchInput" (keyup.enter)="getSearch()">
+    </ion-input>
+    <ion-buttons slot="end">
+      <ion-button (click)="getSearch()">
+        <ion-icon slot="icon-only" name="search"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">search</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Display containers for each item -->
+  <ng-container *ngIf="items.length > 0; else noResults">
+    <ion-card *ngFor="let item of items">
+      <ion-card-content *ngFor="let link of item.links" class="ion-text-center">
+        <!-- Conditionally render img or video based on the link type -->
+        <ng-container *ngIf="isImage(link)">
+          <img [src]="link.href" alt="Image didn't load">
+        </ng-container>
+        <ng-container *ngIf="isVideo(link)">
+          <p>Video URL: {{ link.href }}</p>
+          <video width="320" height="240" controls *ngIf="isVideo(link)">
+            <source [src]="getSafeVideoUrl(link.href)" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </ng-container>
+
+        <!-- Customize the content based on your link structure -->
+        <!-- For example, you can display link details here -->
+        <ion-card-title>{{ link.title }}</ion-card-title>
+        <p>{{ link.description }}</p>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Button for next page -->
+    <ion-button *ngIf="nextPageLink" (click)="goToNextPage()" expand="full" class="transparent-button">Next Page</ion-button>
+  </ng-container>
+
+  <!-- No Results Message -->
+  <ng-template #noResults>
+    <div class="ion-text-center">
+      <p>No results found.</p>
+    </div>
+  </ng-template>
+</ion-content>

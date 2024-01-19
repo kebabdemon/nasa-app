@@ -1,0 +1,45 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title slot="start">
+      Mars Rover
+      <ion-icon size="large" style="vertical-align: -7pt" name="rocket-outline"></ion-icon>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-item>
+    <ion-label>Sol Range</ion-label>
+    <ion-range pin="true" min="0" max="4000" [(ngModel)]="solRange">
+      <ion-label slot="start">0</ion-label>
+      <ion-label slot="end">4000</ion-label>
+    </ion-range>
+  </ion-item>
+
+  <ion-button expand="full" (click)="onSubmit()">Submit</ion-button>
+
+  <ion-card *ngIf="marsRoverData && marsRoverData.photos && marsRoverData.photos.length > 0">
+    <ion-card-header>
+      <ion-card-subtitle>Mars Rover Photos</ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let photo of marsRoverData.photos">
+          <ion-thumbnail slot="start" style="width: 150pt; height: 150pt;">
+            <img [src]="photo.img_src" alt="Mars Rover Photo">
+          </ion-thumbnail>
+          <ion-label>
+            <h2>{{ photo.camera.full_name }}</h2>
+            <p>Sol: {{ photo.sol }}</p>
+            <ion-chip>Earth Data: {{ photo.earth_date }}</ion-chip>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+  <div *ngIf="marsRoverData && marsRoverData.photos && marsRoverData.photos.length === 0">
+    No photos available for the specified parameters.
+  </div>
+</ion-content>
